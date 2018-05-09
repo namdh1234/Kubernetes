@@ -1,5 +1,4 @@
-#
-# [member]
+#[member]
 ETCD_NAME=default
 ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
 ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"
