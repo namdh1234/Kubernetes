@@ -6,7 +6,7 @@
 - kube-minion02: 10.3.18.39
 
 #Tạo repo
-vi /etc/yum.repo.d/virt7-docker-common-release
+vi /etc/yum.repos.d/virt7-docker-common-release
 
 #Cài đặt trên tất cả các host:
 yum -y install --enablerepo=virt7-docker-common-release kubernetes etcd
@@ -14,7 +14,8 @@ yum -y install --enablerepo=virt7-docker-common-release kubernetes etcd
 #Sửa hostfile:
 echo "10.4.18.31	kube-master
 	  10.4.18.37	kube-minion01
-	  10.4.18.39	kube-minion02" >> /etc/hosts
+	  10.4.18.39	kube-minion02 
+	  10.4.18.40	kube-minion03" >> /etc/hosts
 
 #Sửa file /etc/kubernetes/config
 
