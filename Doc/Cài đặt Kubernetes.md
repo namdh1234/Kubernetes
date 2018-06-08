@@ -103,11 +103,56 @@ https://10.4.18.23:31108
 
 Login bằng token
 
-Cách lấy Dashboard token:
+Tạo token:
 
-kubectl -n kube-system get secret
+Tạo CreateServiceAccount.yaml với nội dung như sau:
 
-kubectl describe secret kubernetes-dashboard-token-lw8t7
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+
+kubectl create -f CreateServiceAccount.yaml
+
+Tạo CreateClusterRoleBinding.yaml với nội dung như sau:
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+[root@k8s-master k8s-user]# cat CreateClusterRoleBinding.yaml 
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kube-system
+
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+
+Output như sau:
+
+Name:         admin-user-token-p49vc
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name=admin-user
+              kubernetes.io/service-account.uid=85820950-6ae3-11e8-a006-005056b1763e
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1025 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXA0OXZjIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI4NTgyMDk1MC02YWUzLTExZTgtYTAwNi0wMDUwNTZiMTc2M2UiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.NRtm1OREcs3zS3Is_ueSmgt39DQdEtdlA6ptFUywJXlo1l6rKkoKcHn0WG4wh-gzPJHxjyuwVxAQGewA3ZGMzOivi76GhvG5cu21dirzQNF3uXEIa-Vba9Ci65JTddP1mJQZb6p485vddpW1WPqRFRaQkicJx7_5-UalyakykADnlaQSaTAQi3D7xn7fhR_rK6iEsiFFteUnnfpzFIeMmAko-yG0fUEv_RBYQqDrKmxrG2idLtrv75OXAero7cA_QzBk2K0qilIFsw17Xbitd57Aj8MhrJjZOqaELRXNQGV5TZadtXmQSgqZvuxv82jxedXkExBowcqbSPx-GgVOKw
 
 Copy token dán vào giao diện truy cập Dashboard bấm Sign in
 
