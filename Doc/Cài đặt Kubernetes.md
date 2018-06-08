@@ -1,9 +1,15 @@
 # Cài đặt Kubernetes sử dụng kubeadm
+
 Sử dụng Centos7
+
 IP các node:
+
 vi /etc/hosts
+
 10.4.18.23	k8s-master
+
 10.4.18.31	k8s-worker01
+
 10.4.18.37	k8s-worker02
 
 scp /etc/hosts root@k8s-woker01:/etc/hosts
@@ -53,7 +59,7 @@ kubeadm init --pod-network-cidr 10.244.0.0/16
 
 Trên các worker node:
 
-kubeadm join --token a2dc82.7e936a7ba007f01e 10.0.0.7:6443 --discovery-token-ca-cert-hash sha256:30aca9f9c04f829a13c925224b34c47df0a784e9ba94e132a983658a70ee2914
+kubeadm join --token a2dc82.7e936a7ba007f01e 10.4.18.23:6443 --discovery-token-ca-cert-hash sha256:30aca9f9c04f829a13c925224b34c47df0a784e9ba94e132a983658a70ee2914
 
 Trên master node:
 
